@@ -1,0 +1,210 @@
+# Cursor Rules - Maquette (Prototype Sprint 0)
+
+> Ces règles s'appliquent UNIQUEMENT au dossier `/maquette/`
+
+---
+
+## 📚 Règles Actives
+
+Quand vous travaillez dans `/maquette/`, Cursor applique automatiquement :
+
+1. **[📁 Structure du Projet](../.cursor/rules/project-structure.mdc)** - Toujours active
+2. **[🎨 Front Office Vue.js](../.cursor/rules/frontend-vue.mdc)** - ⭐ RÈGLE PRINCIPALE
+3. **[🔧 TypeScript](../.cursor/rules/typescript.mdc)** - Standards TypeScript
+4. **[🎨 Styling](../.cursor/rules/styling.mdc)** - TailwindCSS
+
+---
+
+## 🎯 Contexte Spécifique
+
+**Projet :** Maquette Interactive Gomecano (Sprint 0)
+
+**Stack :**
+- Vue.js 3 (Composition API)
+- Vite
+- TypeScript 5
+- TailwindCSS
+- Pinia
+- Vue Router 4
+
+**Caractéristiques IMPORTANTES :**
+```
+✅ 100% données mockées (dans /src/mocks/)
+✅ AUCUNE connexion API/DB
+✅ Prototype fonctionnel complet
+✅ Design system implémenté
+✅ Tous les funnels simulés
+```
+
+**Structure :**
+```
+maquette/src/
+├── assets/
+├── components/
+│   ├── ui/
+│   ├── layout/
+│   ├── sections/
+│   └── features/
+├── views/
+│   ├── b2c/
+│   ├── b2b/
+│   └── recruitment/
+├── composables/
+├── stores/
+├── mocks/           # ⭐ Données mockées
+├── types/
+├── router/
+└── utils/
+```
+
+---
+
+## 🚫 Interdictions Spécifiques Maquette
+
+- ❌ **JAMAIS** de connexion Supabase (maquette uniquement)
+- ❌ **JAMAIS** de vraies API calls
+- ❌ **JAMAIS** de variables d'environnement sensibles
+- ❌ **JAMAIS** modifier les données mockées sans documenter
+
+---
+
+## ✅ Obligations Spécifiques Maquette
+
+- ✅ **TOUJOURS** utiliser les données de `/src/mocks/`
+- ✅ **TOUJOURS** simuler les délais (setTimeout pour réalisme)
+- ✅ **TOUJOURS** typer les mocks avec TypeScript
+- ✅ **TOUJOURS** documenter les nouveaux mocks
+- ✅ **TOUJOURS** garder la cohérence avec le design system
+
+---
+
+## 📝 Quick Reference Maquette
+
+### Utiliser des données mockées
+```vue
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { mockServices } from '@/mocks/services'
+import type { Service } from '@/types/Service.types'
+
+const services = ref<Service[]>([])
+
+onMounted(() => {
+  // Simuler un délai API
+  setTimeout(() => {
+    services.value = mockServices
+  }, 300)
+})
+</script>
+```
+
+### Créer un nouveau mock
+```typescript
+// mocks/myFeature.ts
+import type { MyFeature } from '@/types/MyFeature.types'
+
+export const mockMyFeatures: MyFeature[] = [
+  {
+    id: '1',
+    name: 'Feature 1',
+    description: 'Description...'
+  },
+  {
+    id: '2',
+    name: 'Feature 2',
+    description: 'Description...'
+  }
+]
+```
+
+### Simuler une action asynchrone
+```typescript
+// composables/useMyAction.ts
+import { ref } from 'vue'
+
+export function useMyAction() {
+  const isLoading = ref(false)
+  
+  async function performAction() {
+    isLoading.value = true
+    
+    // Simuler délai réseau
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    // Action simulée
+    console.log('Action performed (mock)')
+    
+    isLoading.value = false
+  }
+  
+  return {
+    isLoading,
+    performAction
+  }
+}
+```
+
+---
+
+## 🎨 Design System
+
+Référence complète dans `/maquette/src/assets/styles/variables.css`
+
+**Couleurs principales :**
+- Bleu (B2C) : `#2f6883`
+- Orange (CTAs) : `#e98013`
+- Vert (Success) : `#29c99e`
+
+**Composants UI disponibles :**
+- `/src/components/ui/Button.vue`
+- `/src/components/ui/Card.vue`
+- `/src/components/ui/Input.vue`
+- `/src/components/ui/Select.vue`
+- `/src/components/ui/Modal.vue`
+- `/src/components/ui/Badge.vue`
+- etc.
+
+---
+
+## 📚 Mocks Disponibles
+
+```typescript
+// Services
+import { mockServices } from '@/mocks/services'
+
+// Témoignages
+import { mockTestimonials } from '@/mocks/testimonials'
+
+// Mécaniciens
+import { mockMechanics } from '@/mocks/mechanics'
+
+// FAQ
+import { mockFaqs } from '@/mocks/faqs'
+
+// Blog
+import { mockBlogPosts } from '@/mocks/blog'
+
+// Rendez-vous
+import { mockAppointments } from '@/mocks/appointments'
+```
+
+---
+
+## ⚠️ IMPORTANT
+
+**Cette maquette est une RÉFÉRENCE pour `/website/`**
+
+- Ne PAS copier-coller sans adapter
+- Les mocks deviennent de vraies données Supabase
+- Les setTimeout deviennent de vraies API calls
+- Les types doivent correspondre au schéma DB
+
+**Statut :** ✅ Sprint 0 TERMINÉ (Ne modifier que si design updates)
+
+---
+
+**Référence complète :** [Frontend Vue.js Rules](../.cursor/rules/frontend-vue.mdc)
+
+
+
+

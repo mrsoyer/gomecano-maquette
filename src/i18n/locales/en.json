@@ -1,0 +1,65 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Sign up",
+    "logout": "Logout"
+  },
+  "account": {
+    "dashboard": "Dashboard",
+    "profile": "My profile",
+    "settings": "Settings",
+    "vehicles": "My vehicles",
+    "interventions": "My interventions",
+    "history": "History",
+    "payments": "Payments",
+    "notifications": "Notifications",
+    "loyalty": "Loyalty",
+    "documents": "Documents",
+    "support": "Support",
+    "subscription": "Subscription",
+    "emergency": "Emergency SOS",
+    "family": "Family"
+  },
+  "booking": {
+    "reserve": "Book now",
+    "modify": "Modify",
+    "cancel": "Cancel",
+    "confirm": "Confirm booking",
+    "selectService": "Select a service",
+    "selectDate": "Select a date",
+    "selectTime": "Select a time"
+  },
+  "intervention": {
+    "status": "Status",
+    "scheduled": "Scheduled",
+    "confirmed": "Confirmed",
+    "inProgress": "In progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "payment": {
+    "addCard": "Add card",
+    "paymentMethod": "Payment method",
+    "invoice": "Invoice",
+    "total": "Total",
+    "paid": "Paid"
+  }
+}
+

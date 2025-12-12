@@ -1,0 +1,65 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent"
+  },
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "register": "Inscription",
+    "logout": "Déconnexion"
+  },
+  "account": {
+    "dashboard": "Tableau de bord",
+    "profile": "Mon profil",
+    "settings": "Paramètres",
+    "vehicles": "Mes véhicules",
+    "interventions": "Mes interventions",
+    "history": "Historique",
+    "payments": "Paiements",
+    "notifications": "Notifications",
+    "loyalty": "Fidélité",
+    "documents": "Documents",
+    "support": "Support",
+    "subscription": "Abonnement",
+    "emergency": "SOS Urgence",
+    "family": "Famille"
+  },
+  "booking": {
+    "reserve": "Réserver",
+    "modify": "Modifier",
+    "cancel": "Annuler",
+    "confirm": "Confirmer la réservation",
+    "selectService": "Choisir un service",
+    "selectDate": "Choisir une date",
+    "selectTime": "Choisir un horaire"
+  },
+  "intervention": {
+    "status": "Statut",
+    "scheduled": "Programmé",
+    "confirmed": "Confirmé",
+    "inProgress": "En cours",
+    "completed": "Terminé",
+    "cancelled": "Annulé"
+  },
+  "payment": {
+    "addCard": "Ajouter une carte",
+    "paymentMethod": "Moyen de paiement",
+    "invoice": "Facture",
+    "total": "Total",
+    "paid": "Payé"
+  }
+}
+

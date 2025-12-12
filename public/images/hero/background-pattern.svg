@@ -1,0 +1,135 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Abstract gradient background pattern for Gomecano Hero -->
+  
+  <!-- Base gradient -->
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#173341;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#2f6883;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#4898be;stop-opacity:0.4" />
+    </linearGradient>
+    
+    <linearGradient id="gradient2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#29c99e;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#2fecba;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#1fa67e;stop-opacity:0.1" />
+    </linearGradient>
+    
+    <filter id="blur1">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="80" />
+    </filter>
+    
+    <filter id="blur2">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="120" />
+    </filter>
+  </defs>
+  
+  <!-- Background base -->
+  <rect width="1920" height="1080" fill="#173341"/>
+  
+  <!-- Blob 1 - Top Left (Blue) -->
+  <circle 
+    cx="300" 
+    cy="200" 
+    r="400" 
+    fill="url(#gradient1)" 
+    filter="url(#blur1)"
+    opacity="0.6"
+  >
+    <animate 
+      attributeName="cy" 
+      values="200;250;200" 
+      dur="8s" 
+      repeatCount="indefinite"
+    />
+  </circle>
+  
+  <!-- Blob 2 - Top Right (Green) -->
+  <ellipse 
+    cx="1600" 
+    cy="150" 
+    rx="350" 
+    ry="400" 
+    fill="url(#gradient2)" 
+    filter="url(#blur2)"
+    opacity="0.4"
+  >
+    <animate 
+      attributeName="rx" 
+      values="350;400;350" 
+      dur="10s" 
+      repeatCount="indefinite"
+    />
+  </ellipse>
+  
+  <!-- Blob 3 - Bottom Left (Green) -->
+  <circle 
+    cx="250" 
+    cy="850" 
+    r="450" 
+    fill="url(#gradient2)" 
+    filter="url(#blur1)"
+    opacity="0.5"
+  >
+    <animate 
+      attributeName="cx" 
+      values="250;300;250" 
+      dur="12s" 
+      repeatCount="indefinite"
+    />
+  </circle>
+  
+  <!-- Blob 4 - Bottom Right (Blue) -->
+  <ellipse 
+    cx="1700" 
+    cy="900" 
+    rx="500" 
+    ry="450" 
+    fill="url(#gradient1)" 
+    filter="url(#blur2)"
+    opacity="0.3"
+  >
+    <animate 
+      attributeName="cy" 
+      values="900;850;900" 
+      dur="9s" 
+      repeatCount="indefinite"
+    />
+  </ellipse>
+  
+  <!-- Center accent blob (Green) -->
+  <circle 
+    cx="960" 
+    cy="540" 
+    r="300" 
+    fill="#29c99e" 
+    filter="url(#blur2)"
+    opacity="0.15"
+  >
+    <animate 
+      attributeName="r" 
+      values="300;350;300" 
+      dur="7s" 
+      repeatCount="indefinite"
+    />
+  </circle>
+  
+  <!-- Geometric shapes overlay -->
+  <g opacity="0.05" stroke="#ffffff" stroke-width="2" fill="none">
+    <!-- Grid pattern -->
+    <line x1="0" y1="360" x2="1920" y2="360" />
+    <line x1="0" y1="720" x2="1920" y2="720" />
+    <line x1="640" y1="0" x2="640" y2="1080" />
+    <line x1="1280" y1="0" x2="1280" y2="1080" />
+    
+    <!-- Circles -->
+    <circle cx="480" cy="270" r="100" />
+    <circle cx="1440" cy="810" r="150" />
+  </g>
+</svg>
+
+
+
+
+
+
