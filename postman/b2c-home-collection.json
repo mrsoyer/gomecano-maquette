@@ -1,0 +1,341 @@
+{
+  "info": {
+    "_postman_id": "b2c-home-gomecano",
+    "name": "Gomecano B2C Home API",
+    "description": "Collection pour tester les fonctions B2C Home (services, testimonials, stats)\n\n## Configuration requise\n\n1. Définir les variables d'environnement :\n   - `SUPABASE_URL`: URL de votre projet Supabase\n   - `SUPABASE_ANON_KEY`: Clé anon publique\n\n2. Ces fonctions sont publiques (pas d'AUTH_TOKEN requis).\n\n## Session: 02-b2c-home\n## Date: 2026-01-06",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "SUPABASE_URL",
+      "value": "https://your-project.supabase.co",
+      "type": "string"
+    },
+    {
+      "key": "SUPABASE_ANON_KEY",
+      "value": "your-anon-key",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Services",
+      "description": "Fonctions pour récupérer les services",
+      "item": [
+        {
+          "name": "home_get_services",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_services",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_get_services"]
+            },
+            "description": "Retourne tous les services actifs avec transformation camelCase.\n\nOutput:\n```json\n{\n  \"success\": true,\n  \"data\": [...services],\n  \"count\": 30\n}\n```"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_services"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": \"uuid\",\n      \"slug\": \"vidange-huile-moteur\",\n      \"name\": \"Vidange huile moteur\",\n      \"description\": \"Remplacement complet de l'huile moteur\",\n      \"priceFrom\": 69,\n      \"duration\": 45,\n      \"category\": \"entretien\",\n      \"imageUrl\": \"/images/services/vidange.jpg\",\n      \"badges\": [\"populaire\", \"rapide\"],\n      \"isInstantQuote\": true,\n      \"included\": [\"Huile moteur\", \"Filtre à huile\"],\n      \"recommended\": true\n    }\n  ],\n  \"count\": 30\n}"
+            }
+          ]
+        },
+        {
+          "name": "home_get_service (existing slug)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_slug\": \"vidange-huile-moteur\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_service",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_get_service"]
+            },
+            "description": "Retourne un service par son slug.\n\nInput: `p_slug` (TEXT)\n\nOutput:\n```json\n{\n  \"success\": true,\n  \"data\": { ...service }\n}\n```"
+          },
+          "response": [
+            {
+              "name": "Success - Service Found",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"uuid\",\n    \"slug\": \"vidange-huile-moteur\",\n    \"name\": \"Vidange huile moteur\",\n    \"priceFrom\": 69\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "home_get_service (non-existing slug)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_slug\": \"non-existing-service\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_service",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_get_service"]
+            },
+            "description": "Test avec un slug inexistant - doit retourner null."
+          },
+          "response": [
+            {
+              "name": "Success - Service Not Found",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "home_get_service (empty slug)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_slug\": \"\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_service",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_get_service"]
+            },
+            "description": "Test avec slug vide - doit retourner erreur."
+          },
+          "response": [
+            {
+              "name": "Error - Empty Slug",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": false,\n  \"data\": null,\n  \"error\": \"Slug is required\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "home_get_featured_services (default limit)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_featured_services",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_get_featured_services"]
+            },
+            "description": "Retourne les services recommandés (limit par défaut: 6).\n\nOutput:\n```json\n{\n  \"success\": true,\n  \"data\": [...services with recommended=true],\n  \"count\": 6\n}\n```"
+          }
+        },
+        {
+          "name": "home_get_featured_services (custom limit)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_limit\": 3\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_featured_services",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_get_featured_services"]
+            },
+            "description": "Test avec limite personnalisée de 3."
+          }
+        },
+        {
+          "name": "home_search_services (valid query)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_query\": \"vidange\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_search_services",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_search_services"]
+            },
+            "description": "Recherche de services par texte.\n\nInput: `p_query` (TEXT)\n\nOutput:\n```json\n{\n  \"success\": true,\n  \"data\": [...matching services],\n  \"count\": 2,\n  \"query\": \"vidange\"\n}\n```"
+          }
+        },
+        {
+          "name": "home_search_services (short query)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_query\": \"a\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_search_services",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_search_services"]
+            },
+            "description": "Query < 2 chars retourne tous les services."
+          }
+        },
+        {
+          "name": "home_search_services (case insensitive)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_query\": \"VIDANGE\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_search_services",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_search_services"]
+            },
+            "description": "Test recherche insensible à la casse."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Testimonials",
+      "description": "Fonctions pour récupérer les témoignages",
+      "item": [
+        {
+          "name": "home_get_testimonials (default limit)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_testimonials",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_get_testimonials"]
+            },
+            "description": "Retourne les témoignages vérifiés avec rating >= 4.\n\nOutput:\n```json\n{\n  \"success\": true,\n  \"data\": [\n    {\n      \"id\": \"uuid\",\n      \"userId\": \"user-1\",\n      \"userName\": \"Marie D.\",\n      \"userAvatar\": \"...\",\n      \"rating\": 5,\n      \"comment\": \"Service impeccable !\",\n      \"serviceName\": \"Vidange\",\n      \"verified\": true,\n      \"createdAt\": \"2024-11-15\"\n    }\n  ],\n  \"count\": 6\n}\n```"
+          }
+        },
+        {
+          "name": "home_get_testimonials (custom limit)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_limit\": 3\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_testimonials",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_get_testimonials"]
+            },
+            "description": "Test avec limite personnalisée de 3."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stats",
+      "description": "Fonctions pour les statistiques homepage",
+      "item": [
+        {
+          "name": "home_get_stats",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/home_get_stats",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "home_get_stats"]
+            },
+            "description": "Retourne les 4 statistiques de la homepage.\n\nOutput:\n```json\n{\n  \"success\": true,\n  \"data\": [\n    { \"key\": \"clients\", \"value\": \"15 000+\", \"label\": \"Clients satisfaits\", \"icon\": \"mdi-account-group\" },\n    { \"key\": \"rating\", \"value\": \"4.9/5\", \"label\": \"Note moyenne\", \"icon\": \"mdi-star\" },\n    { \"key\": \"interventions\", \"value\": \"50 000+\", \"label\": \"Interventions réalisées\", \"icon\": \"mdi-wrench\" },\n    { \"key\": \"mechanics\", \"value\": \"200+\", \"label\": \"Mécaniciens certifiés\", \"icon\": \"mdi-certificate\" }\n  ],\n  \"count\": 4\n}\n```"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"data\": [\n    { \"key\": \"clients\", \"value\": \"15 000+\", \"label\": \"Clients satisfaits\", \"icon\": \"mdi-account-group\" },\n    { \"key\": \"rating\", \"value\": \"4.9/5\", \"label\": \"Note moyenne\", \"icon\": \"mdi-star\" },\n    { \"key\": \"interventions\", \"value\": \"50 000+\", \"label\": \"Interventions réalisées\", \"icon\": \"mdi-wrench\" },\n    { \"key\": \"mechanics\", \"value\": \"200+\", \"label\": \"Mécaniciens certifiés\", \"icon\": \"mdi-certificate\" }\n  ],\n  \"count\": 4\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

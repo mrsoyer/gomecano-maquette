@@ -1,0 +1,357 @@
+{
+  "info": {
+    "name": "Session 09 - Modules (Chatbot, Analytics, Realtime)",
+    "description": "Tests for modules Edge Function - chatbot, push notifications, analytics tracking",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "supabase_url",
+      "value": "https://ymkdslderliwjuipeisz.supabase.co"
+    },
+    {
+      "key": "anon_key",
+      "value": "{{SUPABASE_ANON_KEY}}"
+    },
+    {
+      "key": "auth_token",
+      "value": "{{AUTH_TOKEN}}"
+    }
+  ],
+  "item": [
+    {
+      "name": "Edge Function - Modules",
+      "item": [
+        {
+          "name": "Chatbot - Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{anon_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"chatbot_respond\",\n  \"message\": \"Bonjour, quels services proposez-vous ?\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/functions/v1/modules",
+              "host": ["{{supabase_url}}"],
+              "path": ["functions", "v1", "modules"]
+            }
+          }
+        },
+        {
+          "name": "Chatbot - Continue Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{anon_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"chatbot_respond\",\n  \"message\": \"Combien coute une vidange ?\",\n  \"conversation_id\": \"{{conversation_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/functions/v1/modules",
+              "host": ["{{supabase_url}}"],
+              "path": ["functions", "v1", "modules"]
+            }
+          }
+        },
+        {
+          "name": "Track Analytics Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{anon_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"track_analytics\",\n  \"event_name\": \"page_view\",\n  \"properties\": {\n    \"page\": \"/services\",\n    \"referrer\": \"google\"\n  },\n  \"session_id\": \"sess_123456\",\n  \"page_url\": \"https://gomecano.fr/services\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/functions/v1/modules",
+              "host": ["{{supabase_url}}"],
+              "path": ["functions", "v1", "modules"]
+            }
+          }
+        },
+        {
+          "name": "Send Push Notification (Auth Required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"send_push_notification\",\n  \"user_id\": \"a0000000-0000-0000-0000-000000000002\",\n  \"title\": \"Rappel RDV\",\n  \"body\": \"Votre rendez-vous est demain a 10h\",\n  \"data\": {\n    \"appointment_id\": \"875b7e27-9487-42c0-b2d4-cf7cdf9517a9\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/functions/v1/modules",
+              "host": ["{{supabase_url}}"],
+              "path": ["functions", "v1", "modules"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "DB Functions via RPC",
+      "item": [
+        {
+          "name": "Get Budget Alerts",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_profile_id\": \"a0000000-0000-0000-0000-000000000002\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/mod_get_budget_alerts",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "mod_get_budget_alerts"]
+            }
+          }
+        },
+        {
+          "name": "Get Predictions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_profile_id\": \"a0000000-0000-0000-0000-000000000002\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/mod_get_predictions",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "mod_get_predictions"]
+            }
+          }
+        },
+        {
+          "name": "Get Analytics Dashboard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_profile_id\": \"a0000000-0000-0000-0000-000000000002\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/mod_get_analytics_dashboard",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "mod_get_analytics_dashboard"]
+            }
+          }
+        },
+        {
+          "name": "Get Vehicle Comparison",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_profile_id\": \"a0000000-0000-0000-0000-000000000002\",\n  \"p_period\": \"year\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/mod_get_vehicle_comparison",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "mod_get_vehicle_comparison"]
+            }
+          }
+        },
+        {
+          "name": "Get Annual Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_profile_id\": \"a0000000-0000-0000-0000-000000000002\",\n  \"p_year\": 2025\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/mod_get_annual_report",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "mod_get_annual_report"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Campaigns",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{anon_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/mod_get_active_campaigns",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "mod_get_active_campaigns"]
+            }
+          }
+        },
+        {
+          "name": "Get Recommendations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{anon_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_service_id\": \"vidange\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/mod_get_recommendations",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "mod_get_recommendations"]
+            }
+          }
+        },
+        {
+          "name": "Get Intervention Realtime",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "apikey",
+                "value": "{{anon_key}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_appointment_id\": \"875b7e27-9487-42c0-b2d4-cf7cdf9517a9\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/mod_get_intervention_realtime",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "mod_get_intervention_realtime"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

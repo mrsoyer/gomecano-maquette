@@ -1,0 +1,5 @@
+export { default as DropZone } from './DropZone.vue'
+export { default as FileUploader } from './FileUploader.vue'
+export { default as AvatarUploader } from './AvatarUploader.vue'
+export { default as ImageGallery } from './ImageGallery.vue'
+export { default as DocumentList } from './DocumentList.vue'

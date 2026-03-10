@@ -1,0 +1,709 @@
+{
+  "info": {
+    "name": "B2B API Tests - Session 6",
+    "description": "Postman collection for testing B2B Supabase RPC functions",
+    "_postman_id": "b2b-session-6-tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "supabase_url",
+      "value": "{{SUPABASE_URL}}"
+    },
+    {
+      "key": "supabase_anon_key",
+      "value": "{{SUPABASE_ANON_KEY}}"
+    },
+    {
+      "key": "test_company_id",
+      "value": "c0000000-0000-0000-0000-000000000001"
+    },
+    {
+      "key": "test_site_id",
+      "value": "s0000000-0000-0000-0000-000000000001"
+    },
+    {
+      "key": "test_vehicle_id",
+      "value": "v0000000-0000-0000-0000-000000000001"
+    }
+  ],
+  "item": [
+    {
+      "name": "Company Management",
+      "item": [
+        {
+          "name": "b2b_get_company",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_get_company",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_get_company"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Company data returned', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.have.property('name');",
+                  "  pm.expect(data.name).to.equal('Transport Express Lyon');",
+                  "});",
+                  "",
+                  "pm.test('Subscription included', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.have.property('subscription');",
+                  "  pm.expect(data.subscription.plan).to.equal('professional');",
+                  "});",
+                  "",
+                  "pm.test('Sites array included', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data.sites).to.be.an('array');",
+                  "  pm.expect(data.sites.length).to.equal(3);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_update_company",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\",\n  \"p_updates\": {\n    \"phone\": \"+33 4 72 00 00 01\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_update_company",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_update_company"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Phone updated', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data.phone).to.equal('+33 4 72 00 00 01');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_get_company_users",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_get_company_users",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_get_company_users"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Returns array', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sites Management",
+      "item": [
+        {
+          "name": "b2b_get_sites",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_get_sites",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_get_sites"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Returns 3 sites', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.be.an('array');",
+                  "  pm.expect(data.length).to.equal(3);",
+                  "});",
+                  "",
+                  "pm.test('Site has address object', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data[0]).to.have.property('address');",
+                  "  pm.expect(data[0].address).to.have.property('city');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_create_site",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\",\n  \"p_site_data\": {\n    \"name\": \"Test Site Postman\",\n    \"address\": {\n      \"street\": \"123 Test Street\",\n      \"city\": \"TestCity\",\n      \"postal_code\": \"12345\"\n    },\n    \"phone\": \"+33 1 23 45 67 89\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_create_site",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_create_site"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Site created with correct name', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data.name).to.equal('Test Site Postman');",
+                  "  pm.collectionVariables.set('test_new_site_id', data.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_update_site",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_site_id\": \"{{test_new_site_id}}\",\n  \"p_updates\": {\n    \"name\": \"Updated Site Postman\",\n    \"phone\": \"+33 1 98 76 54 32\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_update_site",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_update_site"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Site name updated', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data.name).to.equal('Updated Site Postman');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_delete_site",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_site_id\": \"{{test_new_site_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_delete_site",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_delete_site"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Returns true', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.equal(true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fleet Vehicles",
+      "item": [
+        {
+          "name": "b2b_get_fleet_vehicles",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_get_fleet_vehicles",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_get_fleet_vehicles"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Returns 5 vehicles', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.be.an('array');",
+                  "  pm.expect(data.length).to.equal(5);",
+                  "});",
+                  "",
+                  "pm.test('Vehicle has required fields', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data[0]).to.have.property('plate');",
+                  "  pm.expect(data[0]).to.have.property('make');",
+                  "  pm.expect(data[0]).to.have.property('model');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_get_fleet_vehicles_by_site",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_site_id\": \"{{test_site_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_get_fleet_vehicles_by_site",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_get_fleet_vehicles_by_site"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Returns 2 vehicles for Lyon site', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.be.an('array');",
+                  "  pm.expect(data.length).to.equal(2);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_add_fleet_vehicle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\",\n  \"p_vehicle_data\": {\n    \"site_id\": \"{{test_site_id}}\",\n    \"make\": \"Ford\",\n    \"model\": \"Transit\",\n    \"year\": 2024,\n    \"plate\": \"PM-TEST-01\",\n    \"mileage\": 1000,\n    \"fuel_type\": \"diesel\",\n    \"category\": \"utilitaire\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_add_fleet_vehicle",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_add_fleet_vehicle"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Vehicle created with correct plate', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data.plate).to.equal('PM-TEST-01');",
+                  "  pm.collectionVariables.set('test_new_vehicle_id', data.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Budget & Analytics",
+      "item": [
+        {
+          "name": "b2b_get_fleet_budget",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_get_fleet_budget",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_get_fleet_budget"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Budget has required fields', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.have.property('monthly');",
+                  "  pm.expect(data).to.have.property('yearly');",
+                  "  pm.expect(data).to.have.property('current_month_spent');",
+                  "  pm.expect(data).to.have.property('alerts');",
+                  "});",
+                  "",
+                  "pm.test('Yearly budget is 50000', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data.yearly).to.equal(50000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_get_fleet_analytics",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_get_fleet_analytics",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_get_fleet_analytics"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Analytics has required fields', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.have.property('cost_per_km');",
+                  "  pm.expect(data).to.have.property('average_maintenance_cost');",
+                  "  pm.expect(data).to.have.property('top_spending_vehicles');",
+                  "  pm.expect(data).to.have.property('cost_trend');",
+                  "});",
+                  "",
+                  "pm.test('Top spending vehicles is array', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data.top_spending_vehicles).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_get_cost_trend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\",\n  \"p_months\": 6\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_get_cost_trend",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_get_cost_trend"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Returns 6 months of data', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.be.an('array');",
+                  "  pm.expect(data.length).to.equal(6);",
+                  "});",
+                  "",
+                  "pm.test('Each month has date and value', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data[0]).to.have.property('date');",
+                  "  pm.expect(data[0]).to.have.property('value');",
+                  "  pm.expect(data[0]).to.have.property('label');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "b2b_update_fleet_budget",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_company_id\": \"{{test_company_id}}\",\n  \"p_year\": 2026,\n  \"p_month\": 2,\n  \"p_budget_amount\": 5500\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/b2b_update_fleet_budget",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "b2b_update_fleet_budget"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Budget returned', function() {",
+                  "  const data = pm.response.json();",
+                  "  pm.expect(data).to.have.property('monthly');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

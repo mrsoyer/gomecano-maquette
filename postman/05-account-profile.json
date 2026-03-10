@@ -1,0 +1,431 @@
+{
+  "info": {
+    "name": "05-Account-Profile Functions",
+    "_postman_id": "05-account-profile",
+    "description": "Test collection for profile_* Supabase RPC functions\n\nSession: 05-account\nDate: 2026-01-06",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "supabase_url",
+      "value": "https://your-project.supabase.co",
+      "type": "string"
+    },
+    {
+      "key": "supabase_anon_key",
+      "value": "your-anon-key",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "test_address_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (Get Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.access_token) {",
+                  "  pm.collectionVariables.set('access_token', response.access_token);",
+                  "  pm.test('Login successful', () => pm.response.to.have.status(200));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"testpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/auth/v1/token?grant_type=password",
+              "host": ["{{supabase_url}}"],
+              "path": ["auth", "v1", "token"],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "password"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Addresses",
+      "item": [
+        {
+          "name": "1. Get Addresses",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns array', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(Array.isArray(json)).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/profile_get_addresses",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "profile_get_addresses"]
+            }
+          }
+        },
+        {
+          "name": "2. Add Address",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns created address', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.id).to.exist;",
+                  "  pm.collectionVariables.set('test_address_id', json.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_data\": {\n    \"label\": \"Test Address\",\n    \"street\": \"123 Test Street\",\n    \"complement\": \"Apt 4B\",\n    \"city\": \"Paris\",\n    \"zip_code\": \"75001\",\n    \"country\": \"FR\",\n    \"is_default\": false\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/profile_add_address",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "profile_add_address"]
+            }
+          }
+        },
+        {
+          "name": "3. Update Address",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Address updated', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.label).to.equal('Updated Test Address');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_address_id\": \"{{test_address_id}}\",\n  \"p_data\": {\n    \"label\": \"Updated Test Address\",\n    \"is_default\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/profile_update_address",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "profile_update_address"]
+            }
+          }
+        },
+        {
+          "name": "4. Delete Address",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns boolean', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(typeof json).to.equal('boolean');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_address_id\": \"{{test_address_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/profile_delete_address",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "profile_delete_address"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification Preferences",
+      "item": [
+        {
+          "name": "1. Get Notification Preferences",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns preferences object', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.profile_id).to.exist;",
+                  "  pm.expect(json.email_marketing).to.exist;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/profile_get_notification_preferences",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "profile_get_notification_preferences"]
+            }
+          }
+        },
+        {
+          "name": "2. Update Notification Preferences",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Preferences updated', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.email_marketing).to.equal(false);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_data\": {\n    \"email_marketing\": false,\n    \"sms_promotions\": true,\n    \"push_promotions\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/profile_update_notification_preferences",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "profile_update_notification_preferences"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Privacy Settings",
+      "item": [
+        {
+          "name": "1. Get Privacy Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns settings object', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.profile_id).to.exist;",
+                  "  pm.expect(json.share_location).to.exist;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/profile_get_privacy_settings",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "profile_get_privacy_settings"]
+            }
+          }
+        },
+        {
+          "name": "2. Update Privacy Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Settings updated', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.personalized_ads).to.equal(true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{supabase_anon_key}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_data\": {\n    \"share_location\": false,\n    \"personalized_ads\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{supabase_url}}/rest/v1/rpc/profile_update_privacy_settings",
+              "host": ["{{supabase_url}}"],
+              "path": ["rest", "v1", "rpc", "profile_update_privacy_settings"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

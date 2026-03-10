@@ -1,0 +1,138 @@
+/* Gomecano - Main Styles */
+
+@import './variables.css';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* === Base Styles === */
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  html {
+    @apply antialiased;
+    font-family: var(--font-family-base);
+  }
+  
+  body {
+    @apply text-gray-900 bg-white;
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+    line-height: 1.2;
+  }
+  
+  h1 {
+    font-size: var(--text-5xl);
+  }
+  
+  h2 {
+    font-size: var(--text-4xl);
+  }
+  
+  h3 {
+    font-size: var(--text-3xl);
+  }
+  
+  h4 {
+    font-size: var(--text-2xl);
+  }
+  
+  h5 {
+    font-size: var(--text-xl);
+  }
+  
+  h6 {
+    font-size: var(--text-lg);
+  }
+  
+  a {
+    @apply text-blue-primary;
+    transition: var(--transition-base);
+  }
+  
+  a:hover {
+    @apply text-blue-light;
+  }
+  
+  img {
+    @apply max-w-full h-auto;
+  }
+}
+
+/* === Components === */
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .btn-base {
+    @apply inline-flex items-center justify-center font-semibold rounded-md transition-all;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply btn-base bg-orange-primary text-white;
+    @apply hover:bg-orange-hover active:scale-95;
+    @apply focus:ring-orange-primary;
+  }
+  
+  .btn-secondary {
+    @apply btn-base bg-transparent text-blue-primary border-2 border-blue-primary;
+    @apply hover:bg-blue-pale;
+    @apply focus:ring-blue-primary;
+  }
+  
+  .btn-ghost {
+    @apply btn-base bg-transparent text-gray-700;
+    @apply hover:bg-gray-100;
+  }
+  
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+  
+  .btn-md {
+    @apply px-4 py-2 text-base;
+  }
+  
+  .btn-lg {
+    @apply px-6 py-3 text-lg;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+  
+  .input-base {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent;
+    @apply transition-all;
+  }
+}
+
+/* === Utilities === */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .transition-base {
+    transition: var(--transition-base);
+  }
+  
+  .transition-slow {
+    transition: var(--transition-slow);
+  }
+}
+
+
+
+
+
+

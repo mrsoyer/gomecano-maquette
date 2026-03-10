@@ -1,0 +1,1098 @@
+{
+  "info": {
+    "_postman_id": "b2c-account-gomecano",
+    "name": "Gomecano B2C Account API",
+    "description": "Collection complète pour tester les fonctions B2C Account\n\n## Configuration requise\n\n1. Définir les variables d'environnement :\n   - `SUPABASE_URL`: URL de votre projet Supabase\n   - `SUPABASE_ANON_KEY`: Clé anon publique\n   - `AUTH_TOKEN`: Token JWT après login\n\n2. Pour obtenir un AUTH_TOKEN, utiliser d'abord les requêtes du dossier Auth.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "SUPABASE_URL",
+      "value": "https://your-project.supabase.co",
+      "type": "string"
+    },
+    {
+      "key": "SUPABASE_ANON_KEY",
+      "value": "your-anon-key",
+      "type": "string"
+    },
+    {
+      "key": "AUTH_TOKEN",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Authentification Supabase",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/auth/v1/token?grant_type=password",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["auth", "v1", "token"],
+              "query": [{ "key": "grant_type", "value": "password" }]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" }
+            ],
+            "url": {
+              "raw": "{{SUPABASE_URL}}/auth/v1/user",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["auth", "v1", "user"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "DB Functions - Dashboard & Core",
+      "description": "Fonctions dashboard et véhicules",
+      "item": [
+        {
+          "name": "account_get_dashboard",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_dashboard",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_dashboard"]
+            },
+            "description": "Retourne le résumé du dashboard utilisateur"
+          }
+        },
+        {
+          "name": "account_get_appointments",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_status\": null,\n  \"p_from_date\": null,\n  \"p_to_date\": null,\n  \"p_limit\": 20,\n  \"p_offset\": 0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_appointments",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_appointments"]
+            },
+            "description": "Retourne les RDV de l'utilisateur"
+          }
+        },
+        {
+          "name": "account_get_vehicles",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_vehicles",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_vehicles"]
+            },
+            "description": "Retourne tous les véhicules"
+          }
+        },
+        {
+          "name": "account_add_vehicle",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_license_plate\": \"AB-123-CD\",\n  \"p_make_id\": \"uuid-make\",\n  \"p_model_id\": \"uuid-model\",\n  \"p_year\": 2020,\n  \"p_fuel_type\": \"gasoline\",\n  \"p_vin\": null,\n  \"p_mileage\": 50000,\n  \"p_color\": \"Noir\",\n  \"p_is_primary\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_add_vehicle",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_add_vehicle"]
+            },
+            "description": "Ajoute un nouveau véhicule"
+          }
+        },
+        {
+          "name": "account_get_documents",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_type\": null,\n  \"p_limit\": 20,\n  \"p_offset\": 0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_documents",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_documents"]
+            },
+            "description": "Retourne les documents"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DB Functions - Payments",
+      "description": "Fonctions moyens de paiement et factures",
+      "item": [
+        {
+          "name": "account_get_payment_methods",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_payment_methods",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_payment_methods"]
+            },
+            "description": "Retourne les moyens de paiement actifs"
+          }
+        },
+        {
+          "name": "account_add_payment_method",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_type\": \"card\",\n  \"p_card_brand\": \"visa\",\n  \"p_card_last4\": \"4242\",\n  \"p_card_exp_month\": 12,\n  \"p_card_exp_year\": 2026,\n  \"p_stripe_payment_method_id\": \"pm_xxxxx\",\n  \"p_iban_last4\": null,\n  \"p_iban_bank_name\": null,\n  \"p_is_default\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_add_payment_method",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_add_payment_method"]
+            },
+            "description": "Ajoute un nouveau moyen de paiement"
+          }
+        },
+        {
+          "name": "account_set_default_payment_method",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_method_id\": \"uuid-payment-method\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_set_default_payment_method",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_set_default_payment_method"]
+            },
+            "description": "Définit le moyen de paiement par défaut"
+          }
+        },
+        {
+          "name": "account_delete_payment_method",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_method_id\": \"uuid-payment-method\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_delete_payment_method",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_delete_payment_method"]
+            },
+            "description": "Supprime (soft delete) un moyen de paiement"
+          }
+        },
+        {
+          "name": "account_get_invoices",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_status\": null,\n  \"p_limit\": 20,\n  \"p_offset\": 0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_invoices",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_invoices"]
+            },
+            "description": "Retourne les factures avec détails appointment/service"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DB Functions - Loyalty",
+      "description": "Fonctions programme fidélité",
+      "item": [
+        {
+          "name": "account_get_loyalty_account",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_loyalty_account",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_loyalty_account"]
+            },
+            "description": "Retourne le compte fidélité (auto-create si inexistant)"
+          }
+        },
+        {
+          "name": "account_get_loyalty_tiers",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_loyalty_tiers",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_loyalty_tiers"]
+            },
+            "description": "Retourne tous les paliers de fidélité"
+          }
+        },
+        {
+          "name": "account_get_loyalty_transactions",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_limit\": 50,\n  \"p_offset\": 0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_loyalty_transactions",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_loyalty_transactions"]
+            },
+            "description": "Retourne l'historique des transactions fidélité"
+          }
+        },
+        {
+          "name": "account_get_loyalty_rewards",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_loyalty_rewards",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_loyalty_rewards"]
+            },
+            "description": "Retourne les récompenses disponibles"
+          }
+        },
+        {
+          "name": "account_get_loyalty_redemptions",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_limit\": 20,\n  \"p_offset\": 0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_loyalty_redemptions",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_loyalty_redemptions"]
+            },
+            "description": "Retourne l'historique des échanges"
+          }
+        },
+        {
+          "name": "account_redeem_loyalty_reward",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_reward_id\": \"uuid-reward\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_redeem_loyalty_reward",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_redeem_loyalty_reward"]
+            },
+            "description": "Échange des points contre une récompense"
+          }
+        },
+        {
+          "name": "account_add_loyalty_points",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_amount\": 100,\n  \"p_description\": \"Points de parrainage\",\n  \"p_ref_type\": \"referral\",\n  \"p_ref_id\": null\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_add_loyalty_points",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_add_loyalty_points"]
+            },
+            "description": "Ajoute des points fidélité (vérifie tier upgrade)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DB Functions - Notifications",
+      "description": "Fonctions notifications",
+      "item": [
+        {
+          "name": "account_get_notifications_v2",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_unread_only\": false,\n  \"p_type\": null,\n  \"p_limit\": 50,\n  \"p_offset\": 0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_notifications_v2",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_notifications_v2"]
+            },
+            "description": "Retourne les notifications (version étendue)"
+          }
+        },
+        {
+          "name": "account_mark_all_notifications_read",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_mark_all_notifications_read",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_mark_all_notifications_read"]
+            },
+            "description": "Marque toutes les notifications comme lues"
+          }
+        },
+        {
+          "name": "account_delete_notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_notification_id\": \"uuid-notification\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_delete_notification",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_delete_notification"]
+            },
+            "description": "Supprime une notification"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DB Functions - Emergency",
+      "description": "Fonctions demandes d'urgence SOS",
+      "item": [
+        {
+          "name": "account_create_emergency_request",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_vehicle_id\": \"uuid-vehicle\",\n  \"p_description\": \"Pneu crevé sur l'autoroute\",\n  \"p_category\": \"breakdown\",\n  \"p_photos\": [\"https://storage.example.com/photo1.jpg\"],\n  \"p_lat\": 48.8566,\n  \"p_lng\": 2.3522,\n  \"p_address\": \"Paris, France\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_create_emergency_request",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_create_emergency_request"]
+            },
+            "description": "Crée une demande d'urgence SOS"
+          }
+        },
+        {
+          "name": "account_get_active_emergency_request",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_active_emergency_request",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_active_emergency_request"]
+            },
+            "description": "Retourne la demande d'urgence active avec mécanicien"
+          }
+        },
+        {
+          "name": "account_get_sos_updates",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_request_id\": \"uuid-emergency-request\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_sos_updates",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_sos_updates"]
+            },
+            "description": "Retourne les mises à jour d'une demande SOS"
+          }
+        },
+        {
+          "name": "account_cancel_emergency_request",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_request_id\": \"uuid-emergency-request\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_cancel_emergency_request",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_cancel_emergency_request"]
+            },
+            "description": "Annule une demande d'urgence"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DB Functions - Family",
+      "description": "Fonctions partage famille",
+      "item": [
+        {
+          "name": "account_get_family_members",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_family_members",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_family_members"]
+            },
+            "description": "Retourne les membres de la famille"
+          }
+        },
+        {
+          "name": "account_get_family_invitations",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_family_invitations",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_family_invitations"]
+            },
+            "description": "Retourne les invitations en attente"
+          }
+        },
+        {
+          "name": "account_invite_family_member",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_email\": \"famille@example.com\",\n  \"p_permissions\": [\"view_vehicles\", \"book_appointments\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_invite_family_member",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_invite_family_member"]
+            },
+            "description": "Invite un nouveau membre à la famille"
+          }
+        },
+        {
+          "name": "account_remove_family_member",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_member_id\": \"uuid-family-member\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_remove_family_member",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_remove_family_member"]
+            },
+            "description": "Retire un membre de la famille"
+          }
+        },
+        {
+          "name": "account_update_family_permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_member_id\": \"uuid-family-member\",\n  \"p_permissions\": [\"view_vehicles\", \"book_appointments\", \"manage_payments\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_update_family_permissions",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_update_family_permissions"]
+            },
+            "description": "Met à jour les permissions d'un membre"
+          }
+        },
+        {
+          "name": "account_cancel_family_invitation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_invitation_id\": \"uuid-invitation\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_cancel_family_invitation",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_cancel_family_invitation"]
+            },
+            "description": "Annule une invitation"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DB Functions - Support",
+      "description": "Fonctions tickets support",
+      "item": [
+        {
+          "name": "account_get_support_tickets",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_status\": null,\n  \"p_limit\": 20,\n  \"p_offset\": 0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_support_tickets",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_support_tickets"]
+            },
+            "description": "Retourne les tickets de support"
+          }
+        },
+        {
+          "name": "account_get_support_ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_ticket_id\": \"uuid-ticket\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_get_support_ticket",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_get_support_ticket"]
+            },
+            "description": "Retourne un ticket avec ses messages"
+          }
+        },
+        {
+          "name": "account_create_support_ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_subject\": \"Problème avec ma facture\",\n  \"p_description\": \"Je n'arrive pas à télécharger ma facture du mois dernier.\",\n  \"p_category\": \"billing\",\n  \"p_priority\": \"normal\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_create_support_ticket",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_create_support_ticket"]
+            },
+            "description": "Crée un nouveau ticket de support"
+          }
+        },
+        {
+          "name": "account_send_ticket_message",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "apikey", "value": "{{SUPABASE_ANON_KEY}}" },
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"p_ticket_id\": \"uuid-ticket\",\n  \"p_message\": \"Merci pour votre réponse, voici plus de détails...\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/rest/v1/rpc/account_send_ticket_message",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["rest", "v1", "rpc", "account_send_ticket_message"]
+            },
+            "description": "Envoie un message dans un ticket"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Edge Functions",
+      "description": "Fonctions Deno pour services externes",
+      "item": [
+        {
+          "name": "stripe-payment - Create Intent",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"create_intent\",\n  \"amount\": 150.00,\n  \"currency\": \"eur\",\n  \"appointmentId\": \"uuid-appointment\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/stripe-payment",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "stripe-payment"]
+            },
+            "description": "Crée un PaymentIntent Stripe"
+          }
+        },
+        {
+          "name": "stripe-payment - Create Checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"create_checkout\",\n  \"amount\": 150.00,\n  \"currency\": \"eur\",\n  \"appointmentId\": \"uuid-appointment\",\n  \"returnUrl\": \"https://gomecano.fr/account/payments\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/stripe-payment",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "stripe-payment"]
+            },
+            "description": "Crée une session Checkout Stripe"
+          }
+        },
+        {
+          "name": "stripe-payment - Get Payment Methods",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"get_payment_methods\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/stripe-payment",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "stripe-payment"]
+            },
+            "description": "Récupère les moyens de paiement Stripe"
+          }
+        },
+        {
+          "name": "stripe-payment - Attach Payment Method",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"attach_payment_method\",\n  \"paymentMethodId\": \"pm_xxxxx\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/stripe-payment",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "stripe-payment"]
+            },
+            "description": "Attache un moyen de paiement au client"
+          }
+        },
+        {
+          "name": "storage-upload - Upload File",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "" },
+                { "key": "category", "value": "document", "type": "text" },
+                { "key": "fileName", "value": "facture.pdf", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/storage-upload",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "storage-upload"]
+            },
+            "description": "Upload un fichier (avatar, document, vehicle)"
+          }
+        },
+        {
+          "name": "storage-upload - Delete File",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"delete\",\n  \"filePath\": \"user-id/document/facture.pdf\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/storage-upload",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "storage-upload"]
+            },
+            "description": "Supprime un fichier"
+          }
+        },
+        {
+          "name": "storage-upload - Get Signed URL",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"get_signed_url\",\n  \"filePath\": \"user-id/document/facture.pdf\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/storage-upload",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "storage-upload"]
+            },
+            "description": "Génère une URL signée pour accès temporaire"
+          }
+        },
+        {
+          "name": "generate-pdf - Invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"invoice\",\n  \"id\": \"uuid-invoice\",\n  \"locale\": \"fr-FR\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/generate-pdf",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "generate-pdf"]
+            },
+            "description": "Génère un PDF de facture"
+          }
+        },
+        {
+          "name": "generate-pdf - Quote",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"quote\",\n  \"id\": \"uuid-quote\",\n  \"locale\": \"fr-FR\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/generate-pdf",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "generate-pdf"]
+            },
+            "description": "Génère un PDF de devis"
+          }
+        },
+        {
+          "name": "generate-pdf - Appointment Summary",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"appointment_summary\",\n  \"id\": \"uuid-appointment\",\n  \"locale\": \"fr-FR\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/generate-pdf",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "generate-pdf"]
+            },
+            "description": "Génère un PDF récapitulatif d'intervention"
+          }
+        },
+        {
+          "name": "send-notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{AUTH_TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"uuid-user\",\n  \"type\": \"appointment_reminder\",\n  \"channels\": [\"in_app\", \"email\"],\n  \"data\": {\n    \"message\": \"Rappel: votre RDV est prévu demain à 10h\",\n    \"appointmentId\": \"uuid-appointment\",\n    \"actionUrl\": \"https://gomecano.fr/account/appointments\"\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{SUPABASE_URL}}/functions/v1/send-notification",
+              "host": ["{{SUPABASE_URL}}"],
+              "path": ["functions", "v1", "send-notification"]
+            },
+            "description": "Envoie une notification multi-canal"
+          }
+        }
+      ]
+    }
+  ]
+}
